@@ -13,27 +13,6 @@ import "react-dates/lib/css/_datepicker.css";
 
 const store = configureStore();
 
-store.dispatch(
-  addExpense({
-    description: "rent",
-    amount: 1000
-  })
-);
-
-store.dispatch(
-  addExpense({
-    description: "coffee",
-    amount: 100
-  })
-);
-
-store.dispatch(
-  addExpense({
-    description: "credit card",
-    amount: 10
-  })
-);
-
 const App = (
   <Provider store={store}>
     <AppRouter />
