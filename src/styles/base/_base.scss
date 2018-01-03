@@ -14,3 +14,9 @@ button {
 button:disabled {
   cursor: default;
 }
+
+a {
+  &.is-active {
+    font-weight: bold;
+  }
+}
