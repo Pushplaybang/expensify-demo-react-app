@@ -7,6 +7,8 @@ import { addExpense } from "./actions/expenses.js";
 import { setTextFilter } from "./actions/filters.js";
 import { getVisibleExpenses } from "./selectors/getVisibleExpenses.js";
 
+import './firebase/firebase';
+
 const store = configureStore();
 
 const App = (
