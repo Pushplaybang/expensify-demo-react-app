@@ -5,11 +5,7 @@ import { AppRouter } from "./routers/AppRouter.js";
 import { configureStore } from "./store/configureStore.js";
 import { addExpense } from "./actions/expenses.js";
 import { setTextFilter } from "./actions/filters.js";
-import { getVisibleExpenses } from "./selectors/expenses.js";
-
-import "normalize.css/normalize.css";
-import "./styles/styles.scss";
-import "react-dates/lib/css/_datepicker.css";
+import { getVisibleExpenses } from "./selectors/getVisibleExpenses.js";
 
 const store = configureStore();
 
