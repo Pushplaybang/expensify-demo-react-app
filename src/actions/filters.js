@@ -1,3 +1,11 @@
+/**
+ * Synchronous Actions
+ * 1. component calls action generator
+ * 2. action generator returns an object 
+ * 3. component dispatches the object
+ * 4. redux store changes
+ */
+
 // SET_TEXT_FILTER
 export const setTextFilter = (text) => ({
   type: "SET_TEXT_FILTER",
