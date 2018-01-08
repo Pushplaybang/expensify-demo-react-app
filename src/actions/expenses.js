@@ -12,12 +12,12 @@ import { db } from "./../firebase/firebase";
  * Asynchronous Actions
  * ---
  * 1. component calls action generator
- * 2. action generator returns an function
- * 3. component calls dispatch with the functionc on the store (not default behavior
+ * 2. action generator returns a function
+ * 3. component calls dispatch with the function on the store (not default behavior
  *  requires redux-thunk middleware)
  * 4. function runs, has the ability to dispatch other actions or whatever it wants
  *     - async action - http request etc...
- *     - interact with redux store via standard action.
+ *     - ends by interacting with redux store via standard action.
  */
 
 // ADD_EXPENSE
@@ -56,8 +56,35 @@ export const editExpense = (id, updates) => ({
   id,
   updates
 });
+
 // REMOVE_EXPENSE
 export const removeExpense = ({ id } = {}) => ({
   type: "REMOVE_EXPENSE",
   id
 });
+
+export const setExpenses = expenses => ({
+  type: "SET_EXPENSES",
+  expenses
+});
+
+export const startSetExpenses = () => {
+  return dispatch => {
+
+    return db
+      .ref("expenses")
+      .once("value")
+      .then(snapshot => {
+        const expenses = [];
+        snapshot.forEach(item => {
+          expenses.push({
+            id: item.key,
+            ...item.val()
+          });
+        });
+
+        console.log(expenses);
+        dispatch(setExpenses(expenses));
+      });
+  };
+};

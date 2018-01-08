@@ -5,11 +5,23 @@ import {
   startAddExpense,
   addExpense,
   editExpense,
-  removeExpense
+  removeExpense,
+  setExpenses
 } from "./../../actions/expenses";
 import expenses from "./../fixtures/expenses";
 
 const createMockStore = configureMockStore([thunk]);
+
+beforeEach(done => {
+  const expensesData = {};
+  expenses.forEach(({ id, description, note, amount, createdAt }) => {
+    expensesData[id] = { description, note, amount, createdAt };
+  });
+  db
+    .ref("expenses")
+    .set(expensesData)
+    .then(() => done());
+});
 
 test("should setup remove expense action object", () => {
   const action = removeExpense({ id: 1234 });
@@ -66,20 +78,21 @@ test("should add expense to database and store", done => {
     .then(snapshot => {
       expect(snapshot.val()).toEqual(expenseData);
       done();
-    });
+    })
+    .catch(e => console.log(e));
 });
 
-test("should add expense with defaults to database and store", () => {
+test("should add expense with defaults to database and store", (done) => {
   const store = createMockStore({});
   const defaults = {
     description: "",
     note: "",
     amount: 0,
-    createdAt: 0,
+    createdAt: 0
   };
 
   store
-    .dispatch(startAddExpense())
+    .dispatch(startAddExpense({}))
     .then(() => {
       const actions = store.getActions();
       expect(actions[0]).toEqual({
@@ -95,19 +108,14 @@ test("should add expense with defaults to database and store", () => {
     .then(snapshot => {
       expect(snapshot.val()).toEqual(defaults);
       done();
-    });
+    })
+    .catch(e => console.log(e));
 });
 
-// test("should setup the add expense action object with default values", () => {
-//   const action = addExpense();
-//   expect(action).toEqual({
-//     type: "ADD_EXPENSE",
-//     expense: {
-//       id: expect.any(String),
-//       description: "",
-//       note: "",
-//       amount: 0,
-//       createdAt: expect.any(Number)
-//     }
-//   });
-// });
+test("should setup set expense action object with data", () => {
+  const action = setExpenses(expenses);
+  expect(action).toEqual({
+    type: "SET_EXPENSES",
+    expenses
+  });
+});
