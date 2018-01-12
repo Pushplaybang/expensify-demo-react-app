@@ -20,7 +20,6 @@ import { db } from "./../firebase/firebase";
  *     - ends by interacting with redux store via standard action.
  */
 
-// ADD_EXPENSE
 export const addExpense = expense => ({
   type: "ADD_EXPENSE",
   expense
@@ -50,14 +49,20 @@ export const startAddExpense = (expenseData = {}) => {
   };
 };
 
-// EDIT_EXPENSE
 export const editExpense = (id, updates) => ({
   type: "EDIT_EXPENSE",
   id,
   updates
 });
 
-// REMOVE_EXPENSE
+export const startEditExpense = (id, updates) => {
+  return dispatch => {
+    return db.ref(`expenses/${id}`).update(updates).then(() => {
+      dispatch(editExpense(id, updates));
+    });
+  };
+};
+
 export const removeExpense = ({ id }) => ({
   type: "REMOVE_EXPENSE",
   id

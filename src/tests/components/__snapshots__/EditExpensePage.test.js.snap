@@ -11,7 +11,7 @@ exports[`should render EditExpensePage component correctly 1`] = `
         "amount": 200,
         "createdAt": -345600000,
         "description": "item 2 bbcc",
-        "id": 2,
+        "id": "2",
         "note": "",
       }
     }
