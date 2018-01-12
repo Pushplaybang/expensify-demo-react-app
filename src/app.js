@@ -8,7 +8,7 @@ import { setTextFilter } from "./actions/filters.js";
 import { getVisibleExpenses } from "./selectors/getVisibleExpenses.js";
 
 // import firebase setup
-import "./firebase/firebase";
+import { firebase } from "./firebase/firebase";
 
 // initialize redux store
 const store = configureStore();
@@ -25,4 +25,13 @@ ReactDOM.render(<p>loading...</p>, document.getElementById("app"));
 
 store.dispatch(startSetExpenses()).then(() => {
   ReactDOM.render(App, document.getElementById("app"));
+
+  firebase.auth().onAuthStateChanged(user => {
+    if (!user) {
+      console.log("logged out");
+      return;
+    }
+
+    console.log("authenticated!!", user);
+  });
 });

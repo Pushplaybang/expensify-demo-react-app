@@ -12,6 +12,14 @@ exports[`should render Header component correctly 1`] = `
       exact={true}
       to="/"
     >
+      login
+    </NavLink>
+    <NavLink
+      activeClassName="is-active"
+      ariaCurrent="true"
+      exact={true}
+      to="/dashboard"
+    >
       Dashboard
     </NavLink>
     <NavLink
@@ -28,6 +36,12 @@ exports[`should render Header component correctly 1`] = `
     >
       Help
     </NavLink>
+    <button
+      onClick={[Function]}
+      type="button"
+    >
+      Logout
+    </button>
   </nav>
 </header>
 `;
