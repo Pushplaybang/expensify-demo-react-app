@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider, connect } from "react-redux";
-import { AppRouter } from "./routers/AppRouter.js";
+import { AppRouter, history } from "./routers/AppRouter.js";
 import { configureStore } from "./store/configureStore.js";
 import { startSetExpenses } from "./actions/expenses.js";
-import { setTextFilter } from "./actions/filters.js";
+import { login, logout } from "./actions/auth.js";
 import { getVisibleExpenses } from "./selectors/getVisibleExpenses.js";
 
 // import firebase setup
@@ -20,18 +20,29 @@ const App = (
   </Provider>
 );
 
-// Render the App
+let hasRendered = false;
+const renderApp = () => {
+  if (hasRendered) return;
+  hasRendered = true;
+  ReactDOM.render(App, document.getElementById("app"));
+};
+
+// Render loading state
 ReactDOM.render(<p>loading...</p>, document.getElementById("app"));
 
-store.dispatch(startSetExpenses()).then(() => {
-  ReactDOM.render(App, document.getElementById("app"));
+firebase.auth().onAuthStateChanged(user => {
+  if (!user) {
+    store.dispatch(logout());
+    renderApp();
+    history.push("/");
+    return;
+  }
 
-  firebase.auth().onAuthStateChanged(user => {
-    if (!user) {
-      console.log("logged out");
-      return;
+  store.dispatch(startSetExpenses()).then(() => {
+    store.dispatch(login({ uid: user.uid }));
+    renderApp();
+    if (history.location.pathname === "/") {
+      history.push("/dashboard");
     }
-
-    console.log("authenticated!!", user);
   });
 });
