@@ -1,9 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
-import LoginPage from "./../components/LoginPage";
 
-export const PrivateRoute = ({
+export const PublicOnlyRoute = ({
   isAuthenticated,
   component: Component,
   ...props
@@ -11,12 +10,7 @@ export const PrivateRoute = ({
   <Route
     {...props}
     component={routeProps =>
-      isAuthenticated ? (
-        <Component {...routeProps} />
-      ) : (
-        // <Redirect to={"/"} />
-        <LoginPage {...routeProps} />
-      )
+      isAuthenticated ? <Redirect to={"/dashboard"} /> : <Component {...routeProps} />
     }
   />
 );
@@ -25,4 +19,4 @@ const mapStateToProps = state => ({
   isAuthenticated: !!state.auth.uid
 });
 
-export default connect(mapStateToProps)(PrivateRoute);
+export default connect(mapStateToProps)(PublicOnlyRoute);
