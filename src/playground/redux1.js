@@ -25,7 +25,10 @@ const resetCount = () => ({
  * 1 - Reducers are pure functions (no addition input or sideeffects)
  * 2 - Never change state or action
  */
-const countReducer = (state = { count: 0 }, action) => {
+
+const defaultState = { count: 0 };
+
+const countReducer = (state = defaultState, action = {}) => {
   switch (action.type) {
     case "INCREMENT":
       return { count: state.count + action.incrementBy };
@@ -34,7 +37,7 @@ const countReducer = (state = { count: 0 }, action) => {
     case "SET":
       return { count: action.count };
     case "RESET":
-      return { count: 0 };
+      return defaultState;
     default:
       return state;
   }
