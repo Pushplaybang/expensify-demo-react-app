@@ -13,7 +13,7 @@ export const configureStore = () => {
     combineReducers({
       expenses: expensesReducer,
       filters: filterReducer,
-      auth: authReducer,
+      auth: authReducer,  
     }),
     composeEnhancers(applyMiddleware(thunk))
   );
